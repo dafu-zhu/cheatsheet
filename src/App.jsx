@@ -207,13 +207,38 @@ function App() {
     const element = document.querySelector('.preview-wrapper');
 
     const opt = {
-      margin: [0.5, 0.5],
+      margin: [0.5, 0.5, 0.5, 0.5],
       filename: 'cheatsheet.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      image: { type: 'png', quality: 1 },
+      html2canvas: {
+        scale: 4,
+        useCORS: true,
+        letterRendering: true,
+        logging: false,
+        dpi: 300,
+        backgroundColor: '#ffffff',
+        removeContainer: true,
+        imageTimeout: 0,
+        allowTaint: false,
+        foreignObjectRendering: false
+      },
+      jsPDF: {
+        unit: 'in',
+        format: 'letter',
+        orientation: 'portrait',
+        compress: false,
+        precision: 16
+      },
+      pagebreak: {
+        mode: ['avoid-all', 'css', 'legacy'],
+        before: '.preview-column',
+        after: [],
+        avoid: ['table', 'tr', 'pre', 'code', 'blockquote']
+      }
     };
 
+    // The preview-wrapper already has fontSize applied via inline style
+    // html2canvas will capture the computed CSS styles including font sizes
     html2pdf().set(opt).from(element).save();
   };
 

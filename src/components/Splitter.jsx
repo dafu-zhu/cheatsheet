@@ -48,7 +48,7 @@ const Splitter = ({ children, initialSplit = 50 }) => {
 
   return (
     <>
-      <div style={{ flex: `0 0 ${split}%`, minWidth: 0 }}>
+      <div style={{ flex: `0 0 ${split}%`, minWidth: 0}}>
         {leftChild}
       </div>
       <div
@@ -56,7 +56,7 @@ const Splitter = ({ children, initialSplit = 50 }) => {
         onMouseDown={handleMouseDown}
         style={{ cursor: 'col-resize' }}
       />
-      <div style={{ flex: `0 0 ${100 - split}%`, minWidth: 0 }}>
+      <div style={{ flex: `0 0 ${100 - split}%`, minWidth: 0}}>
         {rightChild}
       </div>
     </>

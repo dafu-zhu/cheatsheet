@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import Prism from 'prismjs';
-import 'prismjs/themes/prism-tomorrow.css';
+import 'prismjs/themes/prism.css';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-python';

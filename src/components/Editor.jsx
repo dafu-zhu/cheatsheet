@@ -3,7 +3,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
 import { EditorView } from '@codemirror/view';
 
-const Editor = ({ value, onChange, columnNumber, fontSize = 14 }) => {
+const Editor = ({ value, onChange, columnNumber, fontSize = 12 }) => {
   const fontSizeTheme = EditorView.theme({
     '&': {
       fontSize: `${fontSize}px`,
@@ -19,7 +19,7 @@ const Editor = ({ value, onChange, columnNumber, fontSize = 14 }) => {
       <div className="editor-container">
         <CodeMirror
           value={value}
-          height="100%"
+          maxHeight="100%"
           extensions={[markdown(), fontSizeTheme]}
           onChange={onChange}
           theme="light"
