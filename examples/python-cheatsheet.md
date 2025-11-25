@@ -1,156 +1,143 @@
-# Python Cheatsheet
+# Cheatsheet Editor - Quick Start
 
-## Data Types
+Welcome to the Cheatsheet Editor! This guide will help you create your first cheatsheet.
 
-### Strings
-```python
-s = "Hello, World!"
-s.upper()          # "HELLO, WORLD!"
-s.lower()          # "hello, world!"
-s.split(",")       # ["Hello", " World!"]
-```
+## Getting Started
 
-### Numbers
-```python
-x = 42             # Integer
-y = 3.14           # Float
-z = 2 + 3j         # Complex
+### What You're Looking At
+- **Left Pane**: Your markdown editor
+- **Right Pane**: Live preview of your cheatsheet
+- **Top Bar**: Tools and controls
+
+### Your First Edit
+Try it now! Type some text in the editor and watch it appear in the preview instantly.
+
+## Basic Markdown
+
+### Headers
+```markdown
+# Big Header
+## Medium Header
+### Small Header
 ```
 
 ### Lists
-```python
-lst = [1, 2, 3, 4, 5]
-lst.append(6)      # [1, 2, 3, 4, 5, 6]
-lst.pop()          # Removes last element
-lst[0]             # Access first element
+```markdown
+- Bullet point 1
+- Bullet point 2
+  - Nested item
+
+1. Numbered item
+2. Another item
 ```
 
-## Control Flow
+### Code Blocks
+Use triple backticks with a language:
 
-### If Statements
-```python
-if x > 0:
-    print("Positive")
-elif x < 0:
-    print("Negative")
-else:
-    print("Zero")
+\`\`\`javascript
+function hello() {
+  console.log("Hello!");
+}
+\`\`\`
+
+## Key Features
+
+### Column Layouts
+| Button | Description |
+|--------|-------------|
+| **1 Column** | Full-width single column |
+| **2 Columns** | Side-by-side layout |
+| **3 Columns** | Three-column layout |
+
+### Column Selector
+- Click **Col 1**, **Col 2**, or **Col 3** to edit that column
+- Each column has independent content
+- All columns are preserved when switching layouts
+
+### Font Size Control
+| Button | Action |
+|--------|--------|
+| **A-** | Decrease font size |
+| **A+** | Increase font size |
+| *Display* | Shows current size (10-24px) |
+
+### Resizable Panes
+- **Drag** the separator between editor and preview
+- Adjust to your preferred viewing size
+- Works great on any screen size
+
+## Saving Your Work
+
+### Auto-Save
+Your work is automatically saved to your browser as you type!
+
+### Backup (Recommended)
+1. Click **Backup** button
+2. Save the JSON file to your computer
+3. Never lose your work!
+
+### Restore
+1. Click **Restore** button
+2. Select a previously saved backup file
+3. All content and settings are restored
+
+## Export Options
+
+### PDF Export
+1. Click **Export PDF** button
+2. Wait a moment for generation
+3. Save the PDF to your computer
+4. Perfect for printing or sharing!
+
+## Tips & Tricks
+
+### Make Better Cheatsheets
+- Keep it concise and scannable
+- Use headers to organize sections
+- Include code examples
+- Use tables for comparisons
+- Test your PDF before sharing
+
+### Markdown Tables
+```markdown
+| Header 1 | Header 2 |
+|----------|----------|
+| Cell 1   | Cell 2   |
+| Cell 3   | Cell 4   |
 ```
 
-### Loops
-```python
-# For loop
-for i in range(5):
-    print(i)
+### Inline Code
+Use single backticks for inline code: `variableName`
 
-# While loop
-while x > 0:
-    x -= 1
-
-# List comprehension
-squares = [x**2 for x in range(10)]
+### Links
+```markdown
+[Link Text](https://example.com)
 ```
 
-## Functions
+## Supported Languages
 
-### Basic Function
-```python
-def greet(name):
-    return f"Hello, {name}!"
+Syntax highlighting works for 15+ languages:
+- JavaScript, TypeScript, Python
+- Java, C, C++, C#, Go, Rust
+- SQL, Bash, HTML, CSS
+- JSON, YAML, Markdown
 
-# Lambda function
-square = lambda x: x**2
-```
+## Try It Yourself!
 
-### Arguments
-```python
-def func(a, b, *args, **kwargs):
-    # a, b: positional
-    # args: tuple of extra positional
-    # kwargs: dict of keyword args
-    pass
-```
+1. **Clear this content** and start fresh
+2. **Write your own cheatsheet** on any topic
+3. **Experiment with columns** to find the best layout
+4. **Export a PDF** when you're done
+5. **Backup your work** to save it permanently
 
-## Classes
+## Need Help?
 
-### Basic Class
-```python
-class Person:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-    def greet(self):
-        return f"Hi, I'm {self.name}"
-
-p = Person("Alice", 30)
-```
-
-## Common Operations
-
-### Dictionary
-| Operation | Code | Result |
-|-----------|------|--------|
-| Create | `d = {"a": 1, "b": 2}` | New dict |
-| Access | `d["a"]` | 1 |
-| Add/Update | `d["c"] = 3` | Adds key |
-| Keys | `d.keys()` | dict_keys |
-| Values | `d.values()` | dict_values |
-
-### String Methods
-| Method | Example | Result |
-|--------|---------|--------|
-| `strip()` | `" hi ".strip()` | "hi" |
-| `replace()` | `"hi".replace("i", "o")` | "ho" |
-| `join()` | `"-".join(["a","b"])` | "a-b" |
-| `find()` | `"hello".find("ll")` | 2 |
-
-## File I/O
-
-```python
-# Read file
-with open("file.txt", "r") as f:
-    content = f.read()
-
-# Write file
-with open("file.txt", "w") as f:
-    f.write("Hello")
-```
-
-## List Methods
-
-```python
-lst = [3, 1, 4, 1, 5]
-lst.sort()         # [1, 1, 3, 4, 5]
-lst.reverse()      # [5, 4, 3, 1, 1]
-lst.count(1)       # 2
-lst.index(3)       # Index of first 3
-```
-
-## Useful Built-ins
-
-```python
-len([1, 2, 3])     # 3
-max([1, 2, 3])     # 3
-min([1, 2, 3])     # 1
-sum([1, 2, 3])     # 6
-abs(-5)            # 5
-round(3.14159, 2)  # 3.14
-```
-
-## Exception Handling
-
-```python
-try:
-    result = 10 / 0
-except ZeroDivisionError:
-    print("Cannot divide by zero")
-except Exception as e:
-    print(f"Error: {e}")
-finally:
-    print("Always runs")
-```
+- Your work auto-saves constantly
+- Can't lose data with browser backup
+- Drag separator to adjust view
+- Use column buttons to switch content
+- Font buttons adjust text size
 
 ---
 
-*Python 3.x Reference*
+**Now start creating! Delete this text and write your own cheatsheet.**

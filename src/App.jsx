@@ -5,114 +5,131 @@ import Editor from './components/Editor';
 import Preview from './components/Preview';
 import Splitter from './components/Splitter';
 
-const DEFAULT_COLUMN_1 = `# JavaScript Cheatsheet
+const DEFAULT_COLUMN_1 = `# Cheatsheet Editor - Quick Start
 
-## Variables & Data Types
+Welcome to the Cheatsheet Editor! This guide will help you create your first cheatsheet.
 
-### Variable Declaration
-\`\`\`javascript
-let mutable = "can change";
-const immutable = "cannot change";
-var oldStyle = "avoid using";
+## Getting Started
+
+### What You're Looking At
+- **Left Pane**: Your markdown editor
+- **Right Pane**: Live preview of your cheatsheet
+- **Top Bar**: Tools and controls
+
+### Your First Edit
+Try it now! Type some text in the editor and watch it appear in the preview instantly.
+
+## Basic Markdown
+
+### Headers
+\`\`\`markdown
+# Big Header
+## Medium Header
+### Small Header
 \`\`\`
 
-### Primitive Types
-- **String**: \`"text"\` or \`'text'\`
-- **Number**: \`42\`, \`3.14\`
-- **Boolean**: \`true\`, \`false\`
-- **Null**: \`null\`
-- **Undefined**: \`undefined\`
+### Lists
+\`\`\`markdown
+- Bullet point 1
+- Bullet point 2
+  - Nested item
 
-## Arrays
-
-### Creating Arrays
-\`\`\`javascript
-const arr = [1, 2, 3, 4, 5];
-const empty = [];
+1. Numbered item
+2. Another item
 \`\`\`
 
-### Common Methods
-| Method | Description |
+### Code Blocks
+Use triple backticks with a language for syntax highlighting.
+
+### Inline Code
+Use single backticks: \`variableName\`
+`;
+
+const DEFAULT_COLUMN_2 = `## Key Features
+
+### Column Layouts
+| Button | Description |
 |--------|-------------|
-| \`push()\` | Add to end |
-| \`pop()\` | Remove from end |
-| \`shift()\` | Remove from start |
-| \`unshift()\` | Add to start |
-| \`map()\` | Transform elements |
-| \`filter()\` | Filter elements |
+| **1 Column** | Full-width single column |
+| **2 Columns** | Side-by-side layout |
+| **3 Columns** | Three-column layout |
+
+### Column Selector
+- Click **Col 1**, **Col 2**, or **Col 3** to edit that column
+- Each column has independent content
+- All columns are preserved when switching layouts
+
+### Font Size Control
+| Button | Action |
+|--------|--------|
+| **A-** | Decrease font size |
+| **A+** | Increase font size |
+
+### Resizable Panes
+- **Drag** the separator between editor and preview
+- Adjust to your preferred viewing size
+- Works great on any screen size
+
+## Saving Your Work
+
+### Auto-Save
+Your work is automatically saved to your browser as you type!
+
+### Backup (Recommended)
+1. Click **Backup** button
+2. Save the JSON file to your computer
+3. Never lose your work!
+
+### Restore
+1. Click **Restore** button
+2. Select a previously saved backup file
+3. All content and settings are restored
 `;
 
-const DEFAULT_COLUMN_2 = `## Functions
+const DEFAULT_COLUMN_3 = `## Export Options
 
-### Function Declaration
-\`\`\`javascript
-function greet(name) {
-  return \`Hello, \${name}!\`;
-}
+### PDF Export
+1. Click **Export PDF** button
+2. Wait a moment for generation
+3. Save the PDF to your computer
+4. Perfect for printing or sharing!
+
+## Tips & Tricks
+
+### Make Better Cheatsheets
+- Keep it concise and scannable
+- Use headers to organize sections
+- Include code examples
+- Use tables for comparisons
+- Test your PDF before sharing
+
+### Markdown Tables
+\`\`\`markdown
+| Header 1 | Header 2 |
+|----------|----------|
+| Cell 1   | Cell 2   |
+| Cell 3   | Cell 4   |
 \`\`\`
 
-### Arrow Functions
-\`\`\`javascript
-const greet = (name) => \`Hello, \${name}!\`;
-const add = (a, b) => a + b;
-\`\`\`
+## Supported Languages
 
-## Objects
+Syntax highlighting works for 15+ languages:
+- JavaScript, TypeScript, Python
+- Java, C, C++, C#, Go, Rust
+- SQL, Bash, HTML, CSS
+- JSON, YAML, Markdown
 
-### Creating Objects
-\`\`\`javascript
-const person = {
-  name: "John",
-  age: 30,
-  greet() {
-    console.log("Hi!");
-  }
-};
-\`\`\`
+## Try It Yourself!
 
-### Accessing Properties
-\`\`\`javascript
-person.name        // Dot notation
-person["age"]      // Bracket notation
-\`\`\`
-`;
+1. **Clear this content** and start fresh
+2. **Write your own cheatsheet** on any topic
+3. **Experiment with columns** to find the best layout
+4. **Export a PDF** when you're done
+5. **Backup your work** to save it permanently
 
-const DEFAULT_COLUMN_3 = `## Control Flow
+---
 
-### Conditionals
-\`\`\`javascript
-if (condition) {
-  // do something
-} else if (otherCondition) {
-  // do something else
-} else {
-  // default
-}
-\`\`\`
-
-### Loops
-\`\`\`javascript
-// For loop
-for (let i = 0; i < 5; i++) {
-  console.log(i);
-}
-
-// While loop
-while (condition) {
-  // code
-}
-
-// For...of
-for (const item of array) {
-  console.log(item);
-}
-\`\`\`
-
-## Useful Tips
-
-> **Pro Tip**: Use \`const\` by default, only use \`let\` when you need to reassign.
-
-> **Remember**: JavaScript is case-sensitive!
+**Now start creating! Delete this text and write your own cheatsheet.**
 `;
 
 const STORAGE_KEY_PREFIX = 'cheatsheet-content-';
@@ -207,7 +224,7 @@ function App() {
     const element = document.querySelector('.preview-wrapper');
 
     const opt = {
-      margin: [0.5, 0.5, 0.5, 0.5],
+      margin: [0.2, 0.2, 0.2, 0.2],
       filename: 'cheatsheet.pdf',
       image: { type: 'png', quality: 1 },
       html2canvas: {
