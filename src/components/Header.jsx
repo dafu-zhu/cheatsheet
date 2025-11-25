@@ -10,29 +10,42 @@ const Header = ({
   onFontSizeChange,
   onExportWorkspace,
   onImportWorkspace,
+  onRestoreDefaults,
 }) => {
   return (
     <header className="header">
       <div className="header-left">
-        <h1>Cheatsheet Editor</h1>
+        <div className="title-group">
+          <h1>Cheatsheet Editor</h1>
+          <button
+            className="refresh-btn"
+            onClick={onRestoreDefaults}
+            title="Restore default example content"
+          >
+            ↻
+          </button>
+        </div>
         <div className="column-selector">
           <button
             className={`column-btn ${columns === 1 ? 'active' : ''}`}
             onClick={() => onColumnsChange(1)}
+            title="1 Column Layout"
           >
-            1 Column
+            1 Col
           </button>
           <button
             className={`column-btn ${columns === 2 ? 'active' : ''}`}
             onClick={() => onColumnsChange(2)}
+            title="2 Column Layout"
           >
-            2 Columns
+            2 Col
           </button>
           <button
             className={`column-btn ${columns === 3 ? 'active' : ''}`}
             onClick={() => onColumnsChange(3)}
+            title="3 Column Layout"
           >
-            3 Columns
+            3 Col
           </button>
         </div>
         <div className="editor-selector">

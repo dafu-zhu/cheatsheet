@@ -20,7 +20,7 @@ const Editor = ({ value, onChange, columnNumber, fontSize = 12 }) => {
         <CodeMirror
           value={value}
           maxHeight="100%"
-          extensions={[markdown(), fontSizeTheme]}
+          extensions={[markdown(), fontSizeTheme, EditorView.lineWrapping]}
           onChange={onChange}
           theme="light"
           basicSetup={{

@@ -364,6 +364,22 @@ function App() {
     }
   };
 
+  const handleRestoreDefaults = () => {
+    if (confirm('This will restore the default example content. Continue?')) {
+      setColumnContents([DEFAULT_COLUMN_1, DEFAULT_COLUMN_2, DEFAULT_COLUMN_3]);
+      setColumns(2);
+      setCurrentColumn(0);
+      setFontSize(14);
+      // Update localStorage with defaults
+      localStorage.setItem(STORAGE_KEY_PREFIX + '1', DEFAULT_COLUMN_1);
+      localStorage.setItem(STORAGE_KEY_PREFIX + '2', DEFAULT_COLUMN_2);
+      localStorage.setItem(STORAGE_KEY_PREFIX + '3', DEFAULT_COLUMN_3);
+      localStorage.setItem(COLUMNS_KEY, '2');
+      localStorage.setItem(CURRENT_COLUMN_KEY, '0');
+      localStorage.setItem(FONT_SIZE_KEY, '14');
+    }
+  };
+
   return (
     <div className="app">
       <Header
@@ -376,6 +392,7 @@ function App() {
         onFontSizeChange={setFontSize}
         onExportWorkspace={handleExportWorkspace}
         onImportWorkspace={handleImportWorkspace}
+        onRestoreDefaults={handleRestoreDefaults}
       />
       <main className="main-content">
         <Splitter>

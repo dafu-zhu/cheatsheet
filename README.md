@@ -83,33 +83,6 @@ The editor supports standard markdown syntax:
 - Horizontal rules
 - Inline code
 
-### Code Blocks
-
-Use fenced code blocks with language specification for syntax highlighting:
-
-\`\`\`javascript
-function hello() {
-  console.log("Hello, World!");
-}
-\`\`\`
-
-Supported languages include:
-- JavaScript/TypeScript
-- Python
-- Java
-- C/C++/C#
-- Go
-- Rust
-- SQL
-- Bash
-- JSON/YAML
-- And more!
-
-### Keyboard Shortcuts
-
-- Standard text editing shortcuts work in the editor
-- Markdown formatting is applied automatically in preview
-
 ### Saving and Loading
 
 #### Auto-Save (Browser Storage)
@@ -131,34 +104,6 @@ Supported languages include:
   - Instantly restores all content and settings
 - **Use Case**: Create backups before major changes, share workspaces, or work on multiple devices
 
-
-### Column Layouts
-
-Each column has its own independent content that persists across layout changes:
-
-- **1 Column**: Edit and view a single full-width column
-- **2 Columns**: Edit columns one at a time, preview shows both side-by-side
-- **3 Columns**: Edit columns individually, preview shows all three columns
-
-**Important**: When you switch to fewer columns (e.g., 3 → 2), the third column's content is preserved in memory and will reappear when you switch back to 3 columns. Use the column selector buttons ("Col 1", "Col 2", "Col 3") to switch between editing different columns.
-
-### Font Size Control
-
-Use the font size controls in the header to adjust text size:
-- **A-**: Decrease font size (minimum 10px)
-- **A+**: Increase font size (maximum 24px)
-- Current size is displayed between the buttons
-
-Font size applies to both the editor and preview panes.
-
-### Resizable Panes
-
-Drag the vertical separator between editor and preview to adjust their sizes:
-- Drag left to make editor smaller, preview larger
-- Drag right to make editor larger, preview smaller
-- Separator will highlight blue when hovering
-- Size is constrained between 20% and 80%
-
 ## Project Structure
 
 ```
@@ -179,73 +124,7 @@ cheatsheet/
 └── README.md                # This file
 ```
 
-## Technologies Used
-
-- **React**: UI framework
-- **Vite**: Build tool and development server
-- **CodeMirror**: Code editor component
-- **Marked**: Markdown parsing
-- **Prism.js**: Syntax highlighting
-- **html2pdf.js**: PDF generation
-- **DOMPurify**: HTML sanitization
-
-## Browser Compatibility
-
-The application works best in modern browsers:
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-
-## Tips for Creating Great Cheatsheets
-
-1. **Keep it concise**: Cheatsheets should be quick reference, not tutorials
-2. **Use headers**: Organize content with clear hierarchical headers
-3. **Include examples**: Code examples are more useful than just descriptions
-4. **Use tables**: Tables are great for comparing methods or options
-5. **Leverage columns**: Multi-column layouts help fit more on one page
-6. **Test print**: Always preview your PDF before sharing
-
-## Example Cheatsheet Template
-
-The application includes a default JavaScript cheatsheet template. You can use it as a starting point or replace it with your own content.
-
-## Troubleshooting
-
-### PDF Export Not Working
-
-- Ensure you're using a modern browser
-- Check that the preview pane is rendering correctly
-- Try reducing complex layouts or very long content
-
-### Content Not Saving
-
-- Check browser localStorage permissions
-- Clear browser cache if experiencing issues
-- Use the Save/Load feature as a backup
-
-### Syntax Highlighting Not Showing
-
-- Make sure you specify the language in code blocks
-- Check that the language is in the supported list
-- Refresh the page if highlighting doesn't appear
-
-## Future Enhancements
-
-See PROPOSAL.md for planned features including:
-- Custom themes (dark mode, high contrast)
-- Template library
-- Cloud storage and sharing
-- Collaboration features
-- Export to multiple formats
-
 ## License
 
 ISC
 
-## Contributing
-
-Contributions are welcome! Feel free to submit issues or pull requests.
-
----
-
-Built with ❤️ for developers who love well-organized reference materials.
