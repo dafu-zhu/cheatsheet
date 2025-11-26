@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
 import { EditorView } from '@codemirror/view';
 
-const Editor = ({ value, onChange, columnNumber, fontSize = 12 }) => {
+const Editor = ({ value, onChange, fontSize = 12 }) => {
+  const editorRef = useRef(null);
+
   const fontSizeTheme = EditorView.theme({
     '&': {
       fontSize: `${fontSize}px`,
@@ -13,11 +15,48 @@ const Editor = ({ value, onChange, columnNumber, fontSize = 12 }) => {
     },
   });
 
+  const handlePaste = (event) => {
+    const items = event.clipboardData?.items;
+    if (!items) return;
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        event.preventDefault();
+        const blob = items[i].getAsFile();
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          const base64 = e.target.result;
+          const imageMarkdown = `\n![Pasted Image](${base64})\n`;
+
+          // Get the current editor view
+          const view = editorRef.current?.view;
+          if (view) {
+            const { from } = view.state.selection.main;
+            view.dispatch({
+              changes: { from, insert: imageMarkdown }
+            });
+          } else {
+            // Fallback: append to current value
+            onChange(value + imageMarkdown);
+          }
+        };
+
+        reader.readAsDataURL(blob);
+        break;
+      }
+    }
+  };
+
   return (
     <div className="editor-pane">
-      <div className="pane-header">Editing Column {columnNumber}</div>
-      <div className="editor-container">
+      <div className="pane-header">Markdown Editor</div>
+      <div
+        className="editor-container"
+        onPaste={handlePaste}
+      >
         <CodeMirror
+          ref={editorRef}
           value={value}
           maxHeight="100%"
           extensions={[markdown(), fontSizeTheme, EditorView.lineWrapping]}

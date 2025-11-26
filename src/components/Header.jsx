@@ -4,8 +4,6 @@ const Header = ({
   columns,
   onColumnsChange,
   onExportPDF,
-  currentColumn,
-  onCurrentColumnChange,
   fontSize,
   onFontSizeChange,
   onExportWorkspace,
@@ -47,18 +45,6 @@ const Header = ({
           >
             3 Col
           </button>
-        </div>
-        <div className="editor-selector">
-          <span className="selector-label">Edit:</span>
-          {Array.from({ length: columns }).map((_, index) => (
-            <button
-              key={index}
-              className={`editor-btn ${currentColumn === index ? 'active' : ''}`}
-              onClick={() => onCurrentColumnChange(index)}
-            >
-              Col {index + 1}
-            </button>
-          ))}
         </div>
       </div>
       <div className="header-controls">

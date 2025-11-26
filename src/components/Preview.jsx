@@ -18,36 +18,44 @@ import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-yaml';
 import 'prismjs/components/prism-markdown';
 
-const Preview = ({ columnContents, columns, fontSize = 14 }) => {
+const Preview = ({ content, columns, fontSize = 14 }) => {
   const previewRef = useRef(null);
 
   useEffect(() => {
     if (previewRef.current) {
       Prism.highlightAllUnder(previewRef.current);
     }
-  }, [columnContents]);
+  }, [content]);
 
   const renderMarkdown = (content) => {
     const rawHTML = marked(content || '', {
       breaks: true,
       gfm: true,
     });
-    return DOMPurify.sanitize(rawHTML);
+    // Configure DOMPurify to allow data URIs for images
+    return DOMPurify.sanitize(rawHTML, {
+      ADD_ATTR: ['target'],
+      ALLOW_DATA_ATTR: true,
+      ADD_TAGS: ['img'],
+    });
+  };
+
+  const columnStyle = {
+    fontSize: `${fontSize}px`,
+    columnCount: columns,
+    columnGap: '12px',
   };
 
   return (
     <div className="preview-pane">
       <div className="pane-header">Preview ({columns} {columns === 1 ? 'Column' : 'Columns'})</div>
       <div className="preview-container">
-        <div ref={previewRef} className="preview-wrapper" style={{ fontSize: `${fontSize}px` }}>
-          {columnContents.map((content, index) => (
-            <div
-              key={index}
-              className="preview-column"
-              dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
-            />
-          ))}
-        </div>
+        <div
+          ref={previewRef}
+          className="preview-wrapper"
+          style={columnStyle}
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
+        />
       </div>
     </div>
   );

@@ -316,38 +316,23 @@ code {
 
 .preview-container {
   flex: 1;
-  overflow-x: auto;
+  overflow: auto;
   padding: 20px;
   background-color: #ffffff;
 }
 
 .preview-wrapper {
-  display: flex;
-  gap: 12px;
   max-width: 1200px;
   min-width: 400px;
   margin: 0 auto;
   background-color: white;
   padding: 12px;
-  min-height: min-content;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  column-fill: balance;
 }
 
-.preview-column {
-  flex: 1;
-  min-width: 150px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
-}
-
-.preview-column:not(:last-child) {
-  border-right: 1px solid #d0d7de;
-  padding-right: 12px;
-}
-
-.preview-column h1 {
+.preview-wrapper h1 {
   font-size: 2em;
   margin-bottom: 0.35em;
   color: #24292f;
@@ -356,65 +341,71 @@ code {
   letter-spacing: 0.02em;
   word-spacing: 0.1em;
   word-break: break-word;
+  break-after: avoid;
 }
 
-.preview-column h2 {
+.preview-wrapper h2 {
   font-size: 1.57em;
   margin-top: 0.5em;
   margin-bottom: 0.3em;
   color: #24292f;
   border-bottom: 1px solid #d0d7de;
   padding-bottom: 0.2em;
+  break-after: avoid;
 }
 
-.preview-column h3 {
+.preview-wrapper h3 {
   font-size: 1.29em;
   margin-top: 0.4em;
   margin-bottom: 0.3em;
   color: #24292f;
+  break-after: avoid;
 }
 
-.preview-column h4 {
+.preview-wrapper h4 {
   font-size: 1.14em;
   margin-top: 0.4em;
   margin-bottom: 0.25em;
   color: #24292f;
+  break-after: avoid;
 }
 
-.preview-column h5 {
+.preview-wrapper h5 {
   font-size: 1em;
   margin-top: 0.4em;
   margin-bottom: 0.25em;
   color: #24292f;
   font-weight: bold;
+  break-after: avoid;
 }
 
-.preview-column h6 {
+.preview-wrapper h6 {
   font-size: 0.86em;
   margin-top: 0.4em;
   margin-bottom: 0.25em;
   color: #24292f;
   font-weight: bold;
+  break-after: avoid;
 }
 
-.preview-column p {
+.preview-wrapper p {
   margin-bottom: 0.5em;
   line-height: 1.3;
   color: #24292f;
 }
 
-.preview-column ul,
-.preview-column ol {
+.preview-wrapper ul,
+.preview-wrapper ol {
   margin-bottom: 0.5em;
   padding-left: 1.5em;
 }
 
-.preview-column li {
+.preview-wrapper li {
   margin-bottom: 0.2em;
   line-height: 1.3;
 }
 
-.preview-column code {
+.preview-wrapper code {
   background-color: rgba(175, 184, 193, 0.2);
   padding: 0.14em 0.43em;
   border-radius: 6px;
@@ -423,7 +414,7 @@ code {
   font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
 }
 
-.preview-column pre {
+.preview-wrapper pre {
   background-color: #f6f8fa;
   color: #24292f;
   padding: 10px;
@@ -433,9 +424,11 @@ code {
   white-space: pre-wrap;
   word-wrap: break-word;
   border: 1px solid #d0d7de;
+  /* Allow code blocks to split across columns */
+  break-inside: auto;
 }
 
-.preview-column pre code {
+.preview-wrapper pre code {
   background-color: transparent;
   color: inherit;
   padding: 0;
@@ -444,44 +437,46 @@ code {
   word-wrap: break-word;
 }
 
-.preview-column table {
+.preview-wrapper table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 0.6em;
-  display: block;
+  display: table;
   overflow: auto;
+  /* Prevent tables from splitting across columns */
+  break-inside: avoid;
 }
 
-.preview-column table th,
-.preview-column table td {
+.preview-wrapper table th,
+.preview-wrapper table td {
   border: 1px solid #d0d7de;
   padding: 4px 8px;
   text-align: left;
 }
 
-.preview-column table th {
+.preview-wrapper table th {
   background-color: #f6f8fa;
   color: #24292f;
   font-weight: 600;
 }
 
-.preview-column table tr {
+.preview-wrapper table tr {
   background-color: #ffffff;
   border-top: 1px solid #d0d7de;
 }
 
-.preview-column table tr:nth-child(2n) {
+.preview-wrapper table tr:nth-child(2n) {
   background-color: #f6f8fa;
 }
 
-.preview-column blockquote {
+.preview-wrapper blockquote {
   border-left: 4px solid #d0d7de;
   padding-left: 1em;
   margin: 0.6em 0;
   color: #57606a;
 }
 
-.preview-column hr {
+.preview-wrapper hr {
   border: none;
   border-top: 1px solid #d0d7de;
   margin: 12px 0;
@@ -489,13 +484,22 @@ code {
   background-color: #d0d7de;
 }
 
-.preview-column a {
+.preview-wrapper a {
   color: #0969da;
   text-decoration: none;
 }
 
-.preview-column a:hover {
+.preview-wrapper a:hover {
   text-decoration: underline;
+}
+
+.preview-wrapper img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0.5em 0;
+  border-radius: 4px;
+  break-inside: avoid;
 }
 
 .footer {
@@ -590,36 +594,41 @@ code {
 }
 
 /* PDF export page break handling */
-.preview-column table {
-  page-break-inside: auto;
-  break-inside: auto;
+.preview-wrapper table {
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
-.preview-column table tr {
+.preview-wrapper table tr {
   page-break-inside: avoid;
   break-inside: avoid;
   page-break-after: auto;
 }
 
-.preview-column table thead {
+.preview-wrapper table thead {
   display: table-header-group;
 }
 
-.preview-column table tfoot {
+.preview-wrapper table tfoot {
   display: table-footer-group;
 }
 
-.preview-column h1,
-.preview-column h2,
-.preview-column h3,
-.preview-column h4,
-.preview-column h5,
-.preview-column h6 {
+.preview-wrapper h1,
+.preview-wrapper h2,
+.preview-wrapper h3,
+.preview-wrapper h4,
+.preview-wrapper h5,
+.preview-wrapper h6 {
   page-break-after: avoid;
   break-after: avoid;
 }
 
-.preview-column pre {
+.preview-wrapper pre {
+  page-break-inside: auto;
+  break-inside: auto;
+}
+
+.preview-wrapper img {
   page-break-inside: avoid;
   break-inside: avoid;
 }
@@ -630,22 +639,26 @@ code {
     padding: 0;
   }
 
-  .preview-column table {
-    page-break-inside: auto;
+  .preview-wrapper table {
+    page-break-inside: avoid;
   }
 
-  .preview-column table tr {
+  .preview-wrapper table tr {
     page-break-inside: avoid;
     page-break-after: auto;
   }
 
-  .preview-column table thead {
+  .preview-wrapper table thead {
     display: table-header-group;
   }
 
-  .preview-column h1,
-  .preview-column h2,
-  .preview-column h3 {
+  .preview-wrapper h1,
+  .preview-wrapper h2,
+  .preview-wrapper h3 {
     page-break-after: avoid;
+  }
+
+  .preview-wrapper img {
+    page-break-inside: avoid;
   }
 }
