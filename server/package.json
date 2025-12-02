@@ -1,5 +1,5 @@
 {
   "name": "cheatsheet-server",
   "version": "1.0.0",
-  "type": "module"
+  "type": "commonjs"
 }

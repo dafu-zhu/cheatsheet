@@ -1,5 +1,5 @@
-import express from 'express';
-import passport from 'passport';
+const express = require('express');
+const passport = require('passport');
 const router = express.Router();
 
 // GitHub OAuth routes
@@ -44,4 +44,4 @@ router.get('/status', (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

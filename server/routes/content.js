@@ -1,6 +1,6 @@
-import express from 'express';
+const express = require('express');
 const router = express.Router();
-import Content from '../models/Content.js';
+const Content = require('../models/Content');
 
 // Middleware to check authentication
 const requireAuth = (req, res, next) => {
@@ -70,4 +70,4 @@ router.put('/', requireAuth, async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

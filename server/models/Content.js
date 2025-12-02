@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const contentSchema = new mongoose.Schema({
   userId: {
@@ -35,4 +35,4 @@ contentSchema.pre('save', function(next) {
   next();
 });
 
-export default mongoose.model('Content', contentSchema);
+module.exports = mongoose.model('Content', contentSchema);

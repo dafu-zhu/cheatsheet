@@ -9,8 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server/index.js",
-    "server:dev": "nodemon server/index.js",
-    "start": "node server/index.js"
+    "server:dev": "nodemon server/index.js"
   },
   "keywords": [],
   "author": "",
@@ -38,8 +37,5 @@
     "@vitejs/plugin-react": "^5.1.1",
     "nodemon": "^3.1.11",
     "vite": "^7.2.4"
-  },
-  "engines": {
-    "node": "20.x"
   }
 }
