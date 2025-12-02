@@ -9,6 +9,8 @@ const Header = ({
   onExportWorkspace,
   onImportWorkspace,
   onRestoreDefaults,
+  user,
+  onLogout,
 }) => {
   return (
     <header className="header">
@@ -75,6 +77,17 @@ const Header = ({
         <button className="button success" onClick={onExportPDF}>
           Export PDF
         </button>
+        {user && (
+          <div className="user-info">
+            {user.avatarUrl && (
+              <img src={user.avatarUrl} alt={user.username} className="user-avatar" />
+            )}
+            <span className="username">{user.username}</span>
+            <button className="button secondary logout-btn" onClick={onLogout}>
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );
