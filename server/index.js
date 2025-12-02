@@ -22,9 +22,15 @@ import contentRoutes from './routes/content.js';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// MongoDB connection
+// MongoDB connection with TLS options
+const mongooseOptions = {
+  tls: true,
+  tlsAllowInvalidCertificates: false,
+  tlsAllowInvalidHostnames: false,
+};
+
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI, mongooseOptions)
   .then(() => console.log('MongoDB connected successfully'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
@@ -45,6 +51,7 @@ app.use(
     saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
+      mongoOptions: mongooseOptions,
       touchAfter: 24 * 3600, // lazy session update
     }),
     cookie: {
