@@ -1,6 +1,17 @@
-const passport = require('passport');
-const GitHubStrategy = require('passport-github2').Strategy;
-const User = require('../models/User');
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+// Get the directory name in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load environment variables from the root directory
+dotenv.config({ path: join(__dirname, '..', '..', '.env') });
+
+import passport from 'passport';
+import { Strategy as GitHubStrategy } from 'passport-github2';
+import User from '../models/User.js';
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -51,4 +62,4 @@ passport.use(
   )
 );
 
-module.exports = passport;
+export default passport;

@@ -1,13 +1,23 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const cors = require('cors');
-require('dotenv').config();
+import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-const passport = require('./config/passport');
-const authRoutes = require('./routes/auth');
-const contentRoutes = require('./routes/content');
+// Get the directory name in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load environment variables from the root directory
+dotenv.config({ path: join(__dirname, '..', '.env') });
+
+import express from 'express';
+import mongoose from 'mongoose';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import cors from 'cors';
+
+import passport from './config/passport.js';
+import authRoutes from './routes/auth.js';
+import contentRoutes from './routes/content.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
