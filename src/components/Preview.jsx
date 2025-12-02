@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import Prism from 'prismjs';
@@ -21,61 +21,56 @@ import 'prismjs/components/prism-markdown';
 
 const Preview = ({ content, columns, fontSize = 14 }) => {
   const previewRef = useRef(null);
+  const [processedHTML, setProcessedHTML] = useState('');
+
+  useEffect(() => {
+    const processContent = async () => {
+      // First render the markdown to HTML
+      const rawHTML = marked(content || '', {
+        breaks: true,
+        gfm: true,
+      });
+
+      // Find and replace all indexeddb:// URLs with actual data URLs
+      const indexedDBRegex = /(<img[^>]+src=["'])indexeddb:\/\/([^"']+)(["'][^>]*>)/gi;
+      let html = rawHTML;
+      const matches = [...rawHTML.matchAll(indexedDBRegex)];
+
+      for (const match of matches) {
+        const imageId = match[2];
+        try {
+          const dataUrl = await getImage(imageId);
+          if (dataUrl) {
+            html = html.replace(`indexeddb://${imageId}`, dataUrl);
+          } else {
+            console.warn(`Image not found in IndexedDB: ${imageId}`);
+            // Replace with a placeholder or data URI for broken image
+            html = html.replace(`indexeddb://${imageId}`, 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"/>')
+              .replace(match[0], match[0].replace('>', ' style="border: 2px solid red;">'));
+          }
+        } catch (error) {
+          console.error('Failed to load image:', error, imageId);
+        }
+      }
+
+      // Sanitize and set the processed HTML
+      const sanitized = DOMPurify.sanitize(html, {
+        ADD_ATTR: ['target'],
+        ALLOW_DATA_ATTR: true,
+        ADD_TAGS: ['img'],
+      });
+
+      setProcessedHTML(sanitized);
+    };
+
+    processContent();
+  }, [content]);
 
   useEffect(() => {
     if (previewRef.current) {
       Prism.highlightAllUnder(previewRef.current);
-
-      // Load images from IndexedDB
-      const loadImages = async () => {
-        const images = previewRef.current.querySelectorAll('img');
-        console.log('Found images:', images.length);
-
-        for (const img of images) {
-          console.log('Image src:', img.src);
-          // Check if the src contains indexeddb:// protocol
-          if (img.src.includes('indexeddb://')) {
-            // Extract the image ID from the URL
-            const match = img.src.match(/indexeddb:\/\/([^/]+)/);
-            if (match) {
-              const imageId = match[1];
-              console.log('Loading image from IndexedDB:', imageId);
-              try {
-                const dataUrl = await getImage(imageId);
-                if (dataUrl) {
-                  console.log('Image loaded successfully:', imageId);
-                  img.src = dataUrl;
-                } else {
-                  // Image not found in IndexedDB
-                  console.warn(`Image not found in IndexedDB: ${imageId}`);
-                  img.alt = `${img.alt} (Image not found)`;
-                  img.style.border = '2px solid red';
-                }
-              } catch (error) {
-                console.error('Failed to load image:', error, imageId);
-              }
-            }
-          }
-        }
-      };
-
-      loadImages();
     }
-  }, [content]);
-
-  const renderMarkdown = (content) => {
-    const rawHTML = marked(content || '', {
-      breaks: true,
-      gfm: true,
-    });
-    // Configure DOMPurify to allow data URIs and custom indexeddb:// protocol for images
-    return DOMPurify.sanitize(rawHTML, {
-      ADD_ATTR: ['target'],
-      ALLOW_DATA_ATTR: true,
-      ADD_TAGS: ['img'],
-      ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp|indexeddb|data):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
-    });
-  };
+  }, [processedHTML]);
 
   const columnStyle = {
     fontSize: `${fontSize}px`,
@@ -91,7 +86,7 @@ const Preview = ({ content, columns, fontSize = 14 }) => {
           ref={previewRef}
           className="preview-wrapper"
           style={columnStyle}
-          dangerouslySetInnerHTML={{ __html: renderMarkdown(content) }}
+          dangerouslySetInnerHTML={{ __html: processedHTML }}
         />
       </div>
     </div>
