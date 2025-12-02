@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { markdown } from '@codemirror/lang-markdown';
 import { EditorView } from '@codemirror/view';
+import { saveImage } from '../utils/imageStorage';
 
 const Editor = ({ value, onChange, fontSize = 12 }) => {
   const editorRef = useRef(null);
@@ -15,7 +16,7 @@ const Editor = ({ value, onChange, fontSize = 12 }) => {
     },
   });
 
-  const handlePaste = (event) => {
+  const handlePaste = async (event) => {
     const items = event.clipboardData?.items;
     if (!items) return;
 
@@ -25,20 +26,35 @@ const Editor = ({ value, onChange, fontSize = 12 }) => {
         const blob = items[i].getAsFile();
         const reader = new FileReader();
 
-        reader.onload = (e) => {
+        reader.onload = async (e) => {
           const base64 = e.target.result;
-          const imageMarkdown = `\n![Pasted Image](${base64})\n`;
 
-          // Get the current editor view
-          const view = editorRef.current?.view;
-          if (view) {
-            const { from } = view.state.selection.main;
-            view.dispatch({
-              changes: { from, insert: imageMarkdown }
-            });
-          } else {
-            // Fallback: append to current value
-            onChange(value + imageMarkdown);
+          // Generate a unique ID for this image
+          const imageId = `img${Date.now()}`;
+
+          try {
+            // Save image to IndexedDB
+            console.log('Saving image to IndexedDB:', imageId);
+            await saveImage(imageId, base64);
+            console.log('Image saved successfully:', imageId);
+
+            // Use a custom URL scheme that we'll intercept in the Preview
+            const imageMarkdown = `![Pasted Image](indexeddb://${imageId})`;
+
+            // Get the current editor view
+            const view = editorRef.current?.view;
+            if (view) {
+              const { from } = view.state.selection.main;
+              view.dispatch({
+                changes: { from, insert: imageMarkdown }
+              });
+            } else {
+              // Fallback: append to current value
+              onChange(value + imageMarkdown);
+            }
+          } catch (error) {
+            console.error('Failed to save image:', error);
+            alert('Failed to save image. Please try again.');
           }
         };
 
