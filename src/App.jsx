@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import html2pdf from 'html2pdf.js';
 import Header from './components/Header';
 import Editor from './components/Editor';
 import Preview from './components/Preview';
 import Splitter from './components/Splitter';
-import Login from './components/Login';
-import { useAuth } from './utils/AuthContext';
-import { api } from './utils/api';
 
 const DEFAULT_CONTENT = `# Cheatsheet Editor - Quick Start
 
@@ -139,75 +136,48 @@ const COLUMNS_KEY = 'cheatsheet-columns';
 const FONT_SIZE_KEY = 'cheatsheet-font-size';
 
 function App() {
-  const { user, authenticated, loading, logout } = useAuth();
   const [content, setContent] = useState('');
   const [columns, setColumns] = useState(2);
   const [fontSize, setFontSize] = useState(14);
   const [wordCount, setWordCount] = useState(0);
-  const [syncing, setSyncing] = useState(false);
-  const syncTimeoutRef = useRef(null);
 
-  // Load content from server when authenticated
+  // Load from localStorage on mount
   useEffect(() => {
-    if (authenticated) {
-      loadContentFromServer();
-    }
-  }, [authenticated]);
+    const savedColumns = localStorage.getItem(COLUMNS_KEY);
+    const savedContent = localStorage.getItem(STORAGE_KEY);
+    const savedFontSize = localStorage.getItem(FONT_SIZE_KEY);
 
-  const loadContentFromServer = async () => {
-    try {
-      const data = await api.getContent();
-      setContent(data.content || DEFAULT_CONTENT);
-      setColumns(data.columns || 2);
-      setFontSize(data.fontSize || 14);
-    } catch (error) {
-      console.error('Error loading content:', error);
-      // Fallback to default content on error
+    if (savedContent) {
+      setContent(savedContent);
+    } else {
       setContent(DEFAULT_CONTENT);
     }
-  };
 
-  // Auto-sync to server with debounce (2 seconds after last change)
+    if (savedColumns) {
+      setColumns(parseInt(savedColumns, 10));
+    }
+
+    if (savedFontSize) {
+      setFontSize(parseInt(savedFontSize, 10));
+    }
+  }, []);
+
+  // Auto-save to localStorage and calculate word count
   useEffect(() => {
-    if (!authenticated) return;
+    localStorage.setItem(STORAGE_KEY, content);
 
     // Calculate word count
     const words = content.trim() ? content.trim().split(/\s+/).length : 0;
     setWordCount(words);
+  }, [content]);
 
-    // Clear existing timeout
-    if (syncTimeoutRef.current) {
-      clearTimeout(syncTimeoutRef.current);
-    }
+  useEffect(() => {
+    localStorage.setItem(COLUMNS_KEY, columns.toString());
+  }, [columns]);
 
-    // Set new timeout to sync after 2 seconds of no changes
-    syncTimeoutRef.current = setTimeout(() => {
-      syncToServer();
-    }, 2000);
-
-    return () => {
-      if (syncTimeoutRef.current) {
-        clearTimeout(syncTimeoutRef.current);
-      }
-    };
-  }, [content, columns, fontSize, authenticated]);
-
-  const syncToServer = async () => {
-    if (!authenticated) return;
-
-    try {
-      setSyncing(true);
-      await api.updateContent({
-        content,
-        columns,
-        fontSize,
-      });
-    } catch (error) {
-      console.error('Error syncing content:', error);
-    } finally {
-      setSyncing(false);
-    }
-  };
+  useEffect(() => {
+    localStorage.setItem(FONT_SIZE_KEY, fontSize.toString());
+  }, [fontSize]);
 
   const handleContentChange = (value) => {
     setContent(value);
@@ -359,20 +329,6 @@ function App() {
     }
   };
 
-  // Show loading state
-  if (loading) {
-    return (
-      <div className="app loading">
-        <div className="loading-spinner">Loading...</div>
-      </div>
-    );
-  }
-
-  // Show login if not authenticated
-  if (!authenticated) {
-    return <Login />;
-  }
-
   return (
     <div className="app">
       <Header
@@ -384,8 +340,6 @@ function App() {
         onExportWorkspace={handleExportWorkspace}
         onImportWorkspace={handleImportWorkspace}
         onRestoreDefaults={handleRestoreDefaults}
-        user={user}
-        onLogout={logout}
       />
       <main className="main-content">
         <Splitter>
@@ -404,7 +358,7 @@ function App() {
       <footer className="footer">
         <div className="status">
           <span>Words: {wordCount}</span>
-          <span>{syncing ? 'Syncing...' : 'Synced to cloud'}</span>
+          <span>Auto-saved</span>
         </div>
         <div>Cheatsheet Editor v2.0</div>
       </footer>
